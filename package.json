@@ -1,4 +1,10 @@
 {
   "name": "senales-player",
-  "version": "1.0.0"
-}
+  "version": "1.0.0",
+  "description": "Reproductor web de señales m3u8",
+  "scripts": {
+    "start": "serve -s . -l $PORT --cors"
+  },
+  "dependencies": {
+    "serve": "^14.2.0"
+  }

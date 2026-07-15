@@ -2,15 +2,18 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Señales</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📡</text></svg>">
-  <link rel="stylesheet" href="style.css">
+  <script>if(localStorage.getItem('v')!=='5'){localStorage.setItem('v','5');location.href='?_cb='+Date.now()}</script>
+  <link rel="stylesheet" href="style.css?v=5">
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
   <div class="container">
-    <aside class="sidebar" id="sidebar">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
       <div class="sidebar-header">
         <h1>📡 Señales</h1>
         <span class="count" id="channelCount">0</span>
@@ -18,35 +21,69 @@
       <div class="channel-list" id="channelList"></div>
     </aside>
 
+    <!-- Main -->
     <div class="main">
+
+      <!-- Progress bar -->
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-buffer" id="progressBuffer"></div>
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <!-- Video area -->
       <div class="video-wrapper">
-        <button class="toggle-btn" id="toggleBtn">☰</button>
-        <video id="video" playsinline preload="metadata"></video>
+        <div class="video-inner">
+          <button class="sidebar-toggle-btn" id="sidebarToggle" title="Mostrar/ocultar canales">☰</button>
+          <video id="video" playsinline preload="metadata"></video>
 
-        <div class="placeholder" id="placeholder">
-          <div class="icon">📡</div>
-          <h2>Selecciona un canal</h2>
-        </div>
+          <!-- Placeholder -->
+          <div class="placeholder" id="placeholder">
+            <div class="icon">📡</div>
+            <h2>Selecciona un canal</h2>
+            <p>Elige un canal de la lista para comenzar a reproducir.</p>
+          </div>
 
-        <div class="spinner hidden" id="spinner"></div>
+          <!-- Loading -->
+          <div class="loading-spinner hidden" id="loadingSpinner">
+            <div class="spinner"></div>
+          </div>
 
-        <div class="play-btn hidden" id="playOverlay">▶</div>
+          <!-- Play overlay -->
+          <div class="play-overlay hidden" id="playOverlay">
+            <div class="play-button">▶</div>
+          </div>
 
-        <div class="error hidden" id="errorOverlay">
-          <p id="errorMsg"></p>
-          <button id="retryBtn">Reintentar</button>
+          <!-- Error overlay -->
+          <div class="error-overlay hidden" id="errorOverlay">
+            <div class="error-icon">⚠️</div>
+            <div class="error-title">Error de reproducción</div>
+            <div class="error-detail" id="errorDetail"></div>
+            <button class="retry-btn" id="retryBtn">Reintentar</button>
+          </div>
         </div>
       </div>
 
+      <!-- Controls -->
       <div class="controls">
-        <button class="ctrl-btn" id="playBtn">▶</button>
-        <span class="time" id="time">0:00 / 0:00</span>
-        <span class="ctrl-btn" id="volumeBtn">🔊</span>
-        <input type="range" class="vol-slider" id="volSlider" min="0" max="100" value="100">
-        <button class="ctrl-btn fullscreen" id="fullBtn">⛶</button>
+        <button class="btn" id="playBtn" title="Reproducir/Pausar (Espacio)">▶</button>
+
+        <div class="time">
+          <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+        </div>
+
+        <div class="volume-wrap">
+          <button class="btn" id="volumeBtn" title="Silenciar (M)" style="font-size:16px;width:auto">🔊</button>
+          <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="100">
+        </div>
+
+        <select class="quality-selector" id="qualitySelect" style="display:none">
+          <option value="auto">Auto</option>
+        </select>
+
+        <button class="btn fullscreen-btn" id="fullscreenBtn" title="Pantalla completa (F)">⛶</button>
       </div>
     </div>
-  </div>
-  <script src="app.js"></script>
+
+  <script src="app.js?v=5"></script>
 </body>
 </html>
