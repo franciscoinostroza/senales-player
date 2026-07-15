@@ -365,6 +365,46 @@ html, body {
   left: 0;
 }
 
+/* Play overlay (big center play button) */
+.play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.play-overlay.visible {
+  opacity: 1;
+}
+
+.play-overlay.hidden {
+  display: none;
+}
+
+.play-overlay .play-button {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  color: #fff;
+  transition: transform 0.2s;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.play-overlay .play-button:hover {
+  transform: scale(1.1);
+}
+
 /* Loading spinner */
 .loading-spinner {
   position: absolute;
@@ -413,19 +453,55 @@ html, body {
     max-height: 100%;
   }
 
+  .play-overlay {
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .play-overlay .play-button {
+    width: 100px;
+    height: 100px;
+    font-size: 42px;
+  }
+
   .controls {
-    flex-wrap: wrap;
     height: auto;
-    padding: 8px 12px;
-    gap: 8px;
+    padding: 10px 14px;
+    gap: 10px;
+    flex-wrap: nowrap;
+  }
+
+  .controls .btn {
+    width: 44px;
+    height: 44px;
+    font-size: 24px;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .controls .time {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .volume-wrap {
-    display: none;
+    display: flex;
+  }
+
+  .volume-slider {
+    width: 70px;
+    height: 6px;
+  }
+
+  .volume-slider::-webkit-slider-thumb {
+    width: 18px;
+    height: 18px;
+  }
+
+  .volume-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+  }
+
+  .progress-wrap {
+    height: 8px;
   }
 
   .placeholder .icon {
@@ -448,5 +524,20 @@ html, body {
 
   .channel-item .name {
     font-size: 13px;
+  }
+
+  .controls {
+    padding: 8px 10px;
+    gap: 6px;
+  }
+
+  .controls .btn {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .volume-slider {
+    width: 50px;
   }
 }

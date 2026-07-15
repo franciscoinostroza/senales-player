@@ -12,6 +12,7 @@ class M3U8Player {
     this.retryBtn = document.getElementById('retryBtn');
     this.playBtn = document.getElementById('playBtn');
     this.fullscreenBtn = document.getElementById('fullscreenBtn');
+    this.playOverlay = document.getElementById('playOverlay');
     this.currentTimeEl = document.getElementById('currentTime');
     this.durationEl = document.getElementById('duration');
     this.volumeSlider = document.getElementById('volumeSlider');
@@ -25,6 +26,7 @@ class M3U8Player {
     this.maxRetries = 3;
     this.isPlaying = false;
     this.isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+    this.isMobile = /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent);
 
     this.init();
   }
@@ -98,6 +100,7 @@ class M3U8Player {
   playStream(url) {
     this.destroyHls();
     this.hideError();
+    this.hidePlayOverlay();
     this.placeholder.classList.add('hidden');
     this.loadingSpinner.classList.remove('hidden');
     this.qualitySelect.innerHTML = '<option value="auto">Auto</option>';
@@ -107,9 +110,12 @@ class M3U8Player {
     if (this.isSafari && this.video.canPlayType(mimeType)) {
       this.video.src = url;
       this.video.load();
+      this.video.play().catch(() => {
+        if (this.isMobile) this.showPlayOverlay();
+      });
     } else if (window.Hls && Hls.isSupported()) {
       this.hls = new Hls({
-        enableWorker: true,
+        enableWorker: !this.isMobile,
         lowLatencyMode: false,
         backbufferLength: 30,
         maxBufferLength: 30,
@@ -131,7 +137,9 @@ class M3U8Player {
       this.hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
         this.loadingSpinner.classList.add('hidden');
         this.setupQualitySelector(data.levels);
-        this.video.play().catch(() => {});
+        this.video.play().catch(() => {
+          if (this.isMobile) this.showPlayOverlay();
+        });
       });
 
       this.hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
@@ -222,6 +230,16 @@ class M3U8Player {
     this.video.load();
   }
 
+  showPlayOverlay() {
+    this.playOverlay.classList.remove('hidden');
+    this.playOverlay.classList.add('visible');
+  }
+
+  hidePlayOverlay() {
+    this.playOverlay.classList.remove('visible');
+    this.playOverlay.classList.add('hidden');
+  }
+
   showError(msg) {
     this.loadingSpinner.classList.add('hidden');
     this.errorDetail.textContent = msg;
@@ -268,6 +286,11 @@ class M3U8Player {
     this.video.addEventListener('loadedmetadata', () => this.updateDuration());
     this.video.addEventListener('progress', () => this.updateBuffer());
 
+    this.playOverlay.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.togglePlay();
+    });
+
     this.progressWrap.addEventListener('click', (e) => this.seek(e));
 
     document.addEventListener('keydown', (e) => this.handleKeyboard(e));
@@ -275,10 +298,16 @@ class M3U8Player {
     this.video.addEventListener('play', () => {
       this.isPlaying = true;
       this.playBtn.textContent = '⏸';
+      this.playOverlay.classList.remove('visible');
+      this.playOverlay.classList.add('hidden');
     });
     this.video.addEventListener('pause', () => {
       this.isPlaying = false;
       this.playBtn.textContent = '▶';
+      this.showPlayOverlay();
+    });
+    this.video.addEventListener('ended', () => {
+      this.showPlayOverlay();
     });
   }
 
