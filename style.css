@@ -466,8 +466,9 @@ html, body {
   .controls {
     height: auto;
     padding: 10px 14px;
-    gap: 10px;
-    flex-wrap: nowrap;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    gap: 8px;
+    flex-wrap: wrap;
   }
 
   .controls .btn {
@@ -481,12 +482,16 @@ html, body {
     font-size: 13px;
   }
 
+  .controls .quality-selector {
+    display: none !important;
+  }
+
   .volume-wrap {
     display: flex;
   }
 
   .volume-slider {
-    width: 70px;
+    width: 60px;
     height: 6px;
   }
 
@@ -528,6 +533,7 @@ html, body {
 
   .controls {
     padding: 8px 10px;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
     gap: 6px;
   }
 
@@ -535,6 +541,10 @@ html, body {
     width: 40px;
     height: 40px;
     font-size: 20px;
+  }
+
+  .volume-slider {
+    width: 40px;
   }
 
   .volume-slider {
