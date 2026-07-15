@@ -59,26 +59,26 @@
             <div class="error-detail" id="errorDetail"></div>
             <button class="retry-btn" id="retryBtn">Reintentar</button>
           </div>
-        </div>
 
-        <!-- Controls -->
-        <div class="controls">
-          <button class="btn" id="playBtn" title="Reproducir/Pausar (Espacio)">▶</button>
+          <!-- Controls (floating over video) -->
+          <div class="controls">
+            <button class="btn" id="playBtn" title="Reproducir/Pausar (Espacio)">▶</button>
 
-          <div class="time">
-            <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+            <div class="time">
+              <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+            </div>
+
+            <div class="volume-wrap">
+              <button class="btn" id="volumeBtn" title="Silenciar (M)" style="font-size:16px;width:auto">🔊</button>
+              <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="100">
+            </div>
+
+            <select class="quality-selector" id="qualitySelect" style="display:none">
+              <option value="auto">Auto</option>
+            </select>
+
+            <button class="btn fullscreen-btn" id="fullscreenBtn" title="Pantalla completa (F)">⛶</button>
           </div>
-
-          <div class="volume-wrap">
-            <button class="btn" id="volumeBtn" title="Silenciar (M)" style="font-size:16px;width:auto">🔊</button>
-            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="100">
-          </div>
-
-          <select class="quality-selector" id="qualitySelect" style="display:none">
-            <option value="auto">Auto</option>
-          </select>
-
-          <button class="btn fullscreen-btn" id="fullscreenBtn" title="Pantalla completa (F)">⛶</button>
         </div>
       </div>
   </div>
