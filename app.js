@@ -99,10 +99,9 @@ class M3U8Player {
     localStorage.setItem('señales-canal', channel.nombre);
     this.updateChannelList();
     this.playStream(channel.url);
-    if (this.isMobile) {
+    if (this.isMobile && !this.container.classList.contains('sidebar-collapsed')) {
       this.container.classList.add('sidebar-collapsed');
       localStorage.setItem('señales-sidebar', '0');
-      this.sidebarToggle.textContent = '☰';
     }
   }
 
@@ -333,17 +332,12 @@ class M3U8Player {
     this.container.classList.toggle('sidebar-collapsed');
     const collapsed = this.container.classList.contains('sidebar-collapsed');
     localStorage.setItem('señales-sidebar', collapsed ? '0' : '1');
-    this.sidebarToggle.textContent = collapsed ? '☰' : '✕';
   }
 
   restoreSidebarState() {
     const state = localStorage.getItem('señales-sidebar');
     if (state === '0') {
       this.container.classList.add('sidebar-collapsed');
-      this.sidebarToggle.textContent = '☰';
-    } else {
-      this.container.classList.remove('sidebar-collapsed');
-      this.sidebarToggle.textContent = '✕';
     }
   }
 

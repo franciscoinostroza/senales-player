@@ -29,15 +29,6 @@ html, body {
   height: 100vh;
 }
 
-@supports (height: 100dvh) {
-  .container {
-    height: 100dvh;
-  }
-  #video {
-    max-height: 100dvh;
-  }
-}
-
 /* Sidebar */
 .sidebar {
   width: 300px;
@@ -47,6 +38,7 @@ html, body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition: width 0.2s, min-width 0.2s, opacity 0.2s;
 }
 
 .sidebar-header {
@@ -55,6 +47,7 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .sidebar-header h1 {
@@ -152,6 +145,7 @@ html, body {
   flex-direction: column;
   background: #000;
   position: relative;
+  min-width: 0;
 }
 
 .video-wrapper {
@@ -161,17 +155,17 @@ html, body {
   justify-content: center;
   position: relative;
   background: #000;
+  min-height: 0;
 }
 
 #video {
   width: 100%;
   height: 100%;
-  max-height: 100vh;
   object-fit: contain;
   outline: none;
 }
 
-/* Placeholder when no channel selected */
+/* Placeholder */
 .placeholder {
   position: absolute;
   inset: 0;
@@ -219,7 +213,7 @@ html, body {
   color: var(--text-primary);
   text-align: center;
   padding: 40px;
-  z-index: 2;
+  z-index: 5;
 }
 
 .error-overlay.hidden {
@@ -260,6 +254,41 @@ html, body {
   background: var(--accent-hover);
 }
 
+/* Sidebar toggle button */
+.sidebar-toggle-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 6;
+  background: rgba(0, 0, 0, 0.55);
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sidebar-toggle-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* Desktop sidebar collapse */
+@media (min-width: 769px) {
+  .container.sidebar-collapsed .sidebar {
+    width: 0;
+    min-width: 0;
+    opacity: 0;
+    border-right: none;
+  }
+}
+
 /* Controls bar */
 .controls {
   height: 52px;
@@ -267,8 +296,8 @@ html, body {
   border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
-  padding: 0 20px;
-  gap: 16px;
+  padding: 0 16px;
+  gap: 12px;
   flex-shrink: 0;
 }
 
@@ -286,6 +315,7 @@ html, body {
   justify-content: center;
   width: 36px;
   height: 36px;
+  flex-shrink: 0;
 }
 
 .controls .btn:hover {
@@ -301,23 +331,18 @@ html, body {
   color: var(--text-secondary);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .controls .quality-selector {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 4px 8px;
-  font-size: 12px;
-  cursor: pointer;
-  outline: none;
+  display: none;
 }
 
 .volume-wrap {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .volume-slider {
@@ -374,66 +399,7 @@ html, body {
   left: 0;
 }
 
-/* Sidebar toggle button */
-.sidebar-toggle-btn {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 4;
-  background: rgba(0, 0, 0, 0.55);
-  border: none;
-  color: #fff;
-  font-size: 22px;
-  width: 42px;
-  height: 42px;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.15s, opacity 0.3s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.sidebar-toggle-btn:hover {
-  background: rgba(0, 0, 0, 0.8);
-}
-
-/* Sidebar collapsed states */
-.container.sidebar-collapsed .sidebar {
-  overflow: hidden;
-  opacity: 0;
-  transition: opacity 0.3s, max-height 0.3s, width 0.3s, padding 0.3s, border 0.3s;
-}
-
-/* Desktop sidebar collapse */
-@media (min-width: 769px) {
-  .sidebar {
-    transition: width 0.3s, min-width 0.3s, opacity 0.3s, padding 0.3s, border 0.3s;
-  }
-
-  .container.sidebar-collapsed .sidebar {
-    width: 0;
-    min-width: 0;
-    padding: 0;
-    border-right: none;
-  }
-
-  .container.sidebar-collapsed .sidebar-toggle-btn {
-    opacity: 0.6;
-  }
-
-  .container.sidebar-collapsed .sidebar-toggle-btn:hover {
-    opacity: 1;
-  }
-
-  .container.sidebar-collapsed .sidebar .sidebar-header,
-  .container.sidebar-collapsed .sidebar .channel-list {
-    opacity: 0;
-  }
-}
-
-/* Play overlay (big center play button) */
+/* Play overlay */
 .play-overlay {
   position: absolute;
   inset: 0;
@@ -503,7 +469,7 @@ html, body {
   }
 }
 
-/* Responsive */
+/* Mobile */
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
@@ -512,20 +478,15 @@ html, body {
   .sidebar {
     width: 100%;
     min-width: unset;
-    max-height: 40vh;
+    max-height: 35vh;
     border-right: none;
     border-bottom: 1px solid var(--border);
-    transition: max-height 0.3s, opacity 0.3s, padding 0.3s, border 0.3s;
+    z-index: 10;
+    transition: none;
   }
 
   .container.sidebar-collapsed .sidebar {
-    max-height: 0;
-    padding: 0;
-    border-bottom: none;
-  }
-
-  .channel-list {
-    max-height: 100%;
+    display: none;
   }
 
   .play-overlay {
@@ -539,26 +500,21 @@ html, body {
   }
 
   .controls {
-    height: auto;
-    padding: 10px 14px;
-    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    height: 52px;
+    padding: 0 12px;
     gap: 8px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   .controls .btn {
-    width: 44px;
-    height: 44px;
-    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
     -webkit-tap-highlight-color: transparent;
   }
 
   .controls .time {
-    font-size: 13px;
-  }
-
-  .controls .quality-selector {
-    display: none !important;
+    font-size: 12px;
   }
 
   .volume-wrap {
@@ -566,63 +522,56 @@ html, body {
   }
 
   .volume-slider {
-    width: 60px;
+    width: 50px;
     height: 6px;
   }
 
   .volume-slider::-webkit-slider-thumb {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
 
   .volume-slider::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
 
   .progress-wrap {
-    height: 8px;
+    height: 6px;
   }
 
   .placeholder .icon {
     font-size: 48px;
   }
+
+  .sidebar-toggle-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+  }
 }
 
-@media (max-width: 480px) {
-  .sidebar {
-    max-height: 35vh;
+@media (max-width: 420px) {
+  .controls .time {
+    font-size: 11px;
   }
 
-  .sidebar-header h1 {
-    font-size: 16px;
-  }
-
-  .channel-item {
-    padding: 10px 16px;
-  }
-
-  .channel-item .name {
-    font-size: 13px;
+  .volume-slider {
+    width: 36px;
   }
 
   .controls {
-    padding: 8px 10px;
-    padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
-    gap: 6px;
+    padding: 0 8px;
+    gap: 5px;
   }
 
   .controls .btn {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     font-size: 20px;
   }
 
-  .volume-slider {
-    width: 40px;
-  }
-
-  .volume-slider {
-    width: 50px;
+  .sidebar {
+    max-height: 30vh;
   }
 }
