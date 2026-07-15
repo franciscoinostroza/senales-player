@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Señales</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📡</text></svg>">
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
@@ -59,30 +59,30 @@
             <div class="error-detail" id="errorDetail"></div>
             <button class="retry-btn" id="retryBtn">Reintentar</button>
           </div>
-
-          <!-- Controls (floating over video) -->
-          <div class="controls">
-            <button class="btn" id="playBtn" title="Reproducir/Pausar (Espacio)">▶</button>
-
-            <div class="time">
-              <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
-            </div>
-
-            <div class="volume-wrap">
-              <button class="btn" id="volumeBtn" title="Silenciar (M)" style="font-size:16px;width:auto">🔊</button>
-              <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="100">
-            </div>
-
-            <select class="quality-selector" id="qualitySelect" style="display:none">
-              <option value="auto">Auto</option>
-            </select>
-
-            <button class="btn fullscreen-btn" id="fullscreenBtn" title="Pantalla completa (F)">⛶</button>
-          </div>
         </div>
       </div>
-  </div>
 
-  <script src="app.js?v=2"></script>
+      <!-- Controls -->
+      <div class="controls">
+        <button class="btn" id="playBtn" title="Reproducir/Pausar (Espacio)">▶</button>
+
+        <div class="time">
+          <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+        </div>
+
+        <div class="volume-wrap">
+          <button class="btn" id="volumeBtn" title="Silenciar (M)" style="font-size:16px;width:auto">🔊</button>
+          <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="100">
+        </div>
+
+        <select class="quality-selector" id="qualitySelect" style="display:none">
+          <option value="auto">Auto</option>
+        </select>
+
+        <button class="btn fullscreen-btn" id="fullscreenBtn" title="Pantalla completa (F)">⛶</button>
+      </div>
+    </div>
+
+  <script src="app.js?v=3"></script>
 </body>
 </html>

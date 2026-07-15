@@ -24,8 +24,11 @@ class M3U8Player {
     this.progressFill = document.getElementById('progressFill');
     this.progressBuffer = document.getElementById('progressBuffer');
     this.progressWrap = document.getElementById('progressWrap');
+    this.controls = document.querySelector('.controls');
+    this.mainEl = document.querySelector('.main');
 
     this.retryCount = 0;
+    this.controlsHideTimer = null;
     this.maxRetries = 3;
     this.isPlaying = false;
     this.isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
@@ -98,6 +101,7 @@ class M3U8Player {
     this.retryCount = 0;
     localStorage.setItem('señales-canal', channel.nombre);
     this.updateChannelList();
+    this.showControls();
     this.playStream(channel.url);
     if (this.isMobile && !this.container.classList.contains('sidebar-collapsed')) {
       this.container.classList.add('sidebar-collapsed');
@@ -248,6 +252,29 @@ class M3U8Player {
     this.playOverlay.classList.add('hidden');
   }
 
+  showControls() {
+    this.controls.classList.remove('hidden');
+    clearTimeout(this.controlsHideTimer);
+    if (this.isPlaying) {
+      this.controlsHideTimer = setTimeout(() => this.hideControls(), 3000);
+    }
+  }
+
+  hideControls() {
+    if (!this.video.paused && this.isPlaying) {
+      this.controls.classList.add('hidden');
+    }
+  }
+
+  toggleControls() {
+    if (this.controls.classList.contains('hidden')) {
+      this.showControls();
+    } else {
+      this.controls.classList.add('hidden');
+      clearTimeout(this.controlsHideTimer);
+    }
+  }
+
   showError(msg) {
     this.loadingSpinner.classList.add('hidden');
     this.errorDetail.textContent = msg;
@@ -304,19 +331,47 @@ class M3U8Player {
 
     document.addEventListener('keydown', (e) => this.handleKeyboard(e));
 
+    /* Auto-hide controls */
+    this.mainEl.addEventListener('mousemove', () => this.showControls());
+    this.mainEl.addEventListener('mouseleave', () => {
+      if (this.isPlaying) {
+        this.controlsHideTimer = setTimeout(() => this.hideControls(), 1000);
+      }
+    });
+    this.mainEl.addEventListener('touchstart', () => {
+      if (this.isPlaying) {
+        this.toggleControls();
+      } else {
+        this.showControls();
+      }
+    });
+
+    this.controls.addEventListener('mouseenter', () => clearTimeout(this.controlsHideTimer));
+    this.controls.addEventListener('mouseleave', () => {
+      if (this.isPlaying) {
+        this.controlsHideTimer = setTimeout(() => this.hideControls(), 2000);
+      }
+    });
+
     this.video.addEventListener('play', () => {
       this.isPlaying = true;
       this.playBtn.textContent = '⏸';
       this.playOverlay.classList.remove('visible');
       this.playOverlay.classList.add('hidden');
+      this.showControls();
     });
     this.video.addEventListener('pause', () => {
       this.isPlaying = false;
       this.playBtn.textContent = '▶';
       this.showPlayOverlay();
+      this.showControls();
+      clearTimeout(this.controlsHideTimer);
     });
     this.video.addEventListener('ended', () => {
+      this.isPlaying = false;
       this.showPlayOverlay();
+      this.showControls();
+      clearTimeout(this.controlsHideTimer);
     });
   }
 
