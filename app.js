@@ -107,9 +107,6 @@ class M3U8Player {
     if (this.isSafari && this.video.canPlayType(mimeType)) {
       this.video.src = url;
       this.video.load();
-    } else if (this.video.canPlayType(mimeType)) {
-      this.video.src = url;
-      this.video.load();
     } else if (window.Hls && Hls.isSupported()) {
       this.hls = new Hls({
         enableWorker: true,
