@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "Reproductor web de señales m3u8",
   "scripts": {
-    "start": "node server.js"
+    "start": "serve -s . -l $PORT --cors"
   },
-  "dependencies": {}
+  "dependencies": {
+    "serve": "^14.2.0"
+  }
