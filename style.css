@@ -29,6 +29,15 @@ html, body {
   height: 100vh;
 }
 
+@supports (height: 100dvh) {
+  .container {
+    height: 100dvh;
+  }
+  #video {
+    max-height: 100dvh;
+  }
+}
+
 /* Sidebar */
 .sidebar {
   width: 300px;
@@ -365,6 +374,65 @@ html, body {
   left: 0;
 }
 
+/* Sidebar toggle button */
+.sidebar-toggle-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 4;
+  background: rgba(0, 0, 0, 0.55);
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, opacity 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sidebar-toggle-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* Sidebar collapsed states */
+.container.sidebar-collapsed .sidebar {
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s, max-height 0.3s, width 0.3s, padding 0.3s, border 0.3s;
+}
+
+/* Desktop sidebar collapse */
+@media (min-width: 769px) {
+  .sidebar {
+    transition: width 0.3s, min-width 0.3s, opacity 0.3s, padding 0.3s, border 0.3s;
+  }
+
+  .container.sidebar-collapsed .sidebar {
+    width: 0;
+    min-width: 0;
+    padding: 0;
+    border-right: none;
+  }
+
+  .container.sidebar-collapsed .sidebar-toggle-btn {
+    opacity: 0.6;
+  }
+
+  .container.sidebar-collapsed .sidebar-toggle-btn:hover {
+    opacity: 1;
+  }
+
+  .container.sidebar-collapsed .sidebar .sidebar-header,
+  .container.sidebar-collapsed .sidebar .channel-list {
+    opacity: 0;
+  }
+}
+
 /* Play overlay (big center play button) */
 .play-overlay {
   position: absolute;
@@ -447,6 +515,13 @@ html, body {
     max-height: 40vh;
     border-right: none;
     border-bottom: 1px solid var(--border);
+    transition: max-height 0.3s, opacity 0.3s, padding 0.3s, border 0.3s;
+  }
+
+  .container.sidebar-collapsed .sidebar {
+    max-height: 0;
+    padding: 0;
+    border-bottom: none;
   }
 
   .channel-list {

@@ -12,6 +12,9 @@ class M3U8Player {
     this.retryBtn = document.getElementById('retryBtn');
     this.playBtn = document.getElementById('playBtn');
     this.fullscreenBtn = document.getElementById('fullscreenBtn');
+    this.sidebarToggle = document.getElementById('sidebarToggle');
+    this.sidebar = document.querySelector('.sidebar');
+    this.container = document.querySelector('.container');
     this.playOverlay = document.getElementById('playOverlay');
     this.currentTimeEl = document.getElementById('currentTime');
     this.durationEl = document.getElementById('duration');
@@ -33,6 +36,7 @@ class M3U8Player {
 
   async init() {
     await this.loadChannels();
+    this.restoreSidebarState();
     this.setupEventListeners();
     this.handleQueryParam();
 
@@ -95,6 +99,11 @@ class M3U8Player {
     localStorage.setItem('señales-canal', channel.nombre);
     this.updateChannelList();
     this.playStream(channel.url);
+    if (this.isMobile) {
+      this.container.classList.add('sidebar-collapsed');
+      localStorage.setItem('señales-sidebar', '0');
+      this.sidebarToggle.textContent = '☰';
+    }
   }
 
   playStream(url) {
@@ -270,6 +279,7 @@ class M3U8Player {
 
   /* UI Event Listeners */
   setupEventListeners() {
+    this.sidebarToggle.addEventListener('click', () => this.toggleSidebar());
     this.playBtn.addEventListener('click', () => this.togglePlay());
     this.fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
     this.volumeSlider.addEventListener('input', (e) => this.setVolume(e.target.value));
@@ -316,6 +326,24 @@ class M3U8Player {
       this.video.play().catch(() => {});
     } else {
       this.video.pause();
+    }
+  }
+
+  toggleSidebar() {
+    this.container.classList.toggle('sidebar-collapsed');
+    const collapsed = this.container.classList.contains('sidebar-collapsed');
+    localStorage.setItem('señales-sidebar', collapsed ? '0' : '1');
+    this.sidebarToggle.textContent = collapsed ? '☰' : '✕';
+  }
+
+  restoreSidebarState() {
+    const state = localStorage.getItem('señales-sidebar');
+    if (state === '0') {
+      this.container.classList.add('sidebar-collapsed');
+      this.sidebarToggle.textContent = '☰';
+    } else {
+      this.container.classList.remove('sidebar-collapsed');
+      this.sidebarToggle.textContent = '✕';
     }
   }
 
