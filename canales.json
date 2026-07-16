@@ -6,5 +6,21 @@
   {
     "nombre": "TNT Sports",
     "url": "https://cablevision.trapemn.tv:1936/deportes_transcoder/tntsport.stream/playlist.m3u8"
+  },
+  {
+    "nombre": "TYC Sport",
+    "url": "https://cablevision.trapemn.tv:1936/deportes_transcoder/tycsport.stream/playlist.m3u8"
+  },
+  {
+    "nombre": "Telefe",
+    "url": "https://cablevision.trapemn.tv:1936/nacionales-ar_transcoder/telefe.stream/playlist.m3u8"
+  },
+  {
+    "nombre": "TV Pública",
+    "url": "https://cablevision.trapemn.tv:1936/nacionales-ar_transcoder/tvpublica.stream/playlist.m3u8"
+  },
+  {
+    "nombre": "El Nueve (Canal 9)",
+    "url": "https://cablevision.trapemn.tv:1936/nacionales-ar_transcoder/elnueve.stream/playlist.m3u8"
   }
 ]
